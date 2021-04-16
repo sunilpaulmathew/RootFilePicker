@@ -1,0 +1,6 @@
+<resources>
+    <string name="cancel">Cancel</string>
+    <string name="select">Select</string>
+    <string name="select_question">Select \'%s\'?</string>
+    <string name="sort_order">A-Z</string>
+</resources>

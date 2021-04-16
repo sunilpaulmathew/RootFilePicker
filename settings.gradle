@@ -1,0 +1,2 @@
+include(":demo", ":rootfilepicker")
+rootProject.name = "File Picker"
