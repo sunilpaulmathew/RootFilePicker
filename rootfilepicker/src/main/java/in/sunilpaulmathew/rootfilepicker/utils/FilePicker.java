@@ -1,8 +1,10 @@
 package in.sunilpaulmathew.rootfilepicker.utils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -10,6 +12,7 @@ import android.preference.PreferenceManager;
 import android.util.TypedValue;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.widget.AppCompatImageButton;
 
 import com.topjohnwu.superuser.io.SuFile;
 
@@ -17,6 +20,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import in.sunilpaulmathew.rootfilepicker.R;
 
@@ -32,7 +36,7 @@ public class FilePicker {
         try {
             mData.clear();
             // Add directories
-            for (File mFile : SuFile.open(getPath()).listFiles()) {
+            for (File mFile : Objects.requireNonNull(SuFile.open(getPath()).listFiles())) {
                 if (mFile.isDirectory()) {
                     mDir.add(mFile.getAbsolutePath());
                 }
@@ -43,7 +47,7 @@ public class FilePicker {
             }
             mData.addAll(mDir);
             // Add files
-            for (File mFile : SuFile.open(getPath()).listFiles()) {
+            for (File mFile : Objects.requireNonNull(SuFile.open(getPath()).listFiles())) {
                 if (mFile.isFile() && isSupportedFile(mFile.getAbsolutePath())) {
                     mFiles.add(mFile.getAbsolutePath());
                 }
@@ -59,14 +63,14 @@ public class FilePicker {
         return mData;
     }
 
+    public static boolean isImageFile(String path) {
+        return path.endsWith(".bmp") || path.endsWith(".png") || path.endsWith(".jpg");
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.FROYO)
     public static boolean isDarkTheme(Context context) {
         int currentNightMode = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
         return currentNightMode == Configuration.UI_MODE_NIGHT_YES;
-    }
-
-    public static boolean isImageFile(String path) {
-        return path.endsWith(".bmp") || path.endsWith(".png") || path.endsWith(".jpg");
     }
 
     public static boolean isSupportedFile(String path) {
@@ -98,6 +102,18 @@ public class FilePicker {
         return getPath().equals(Environment.getExternalStorageDirectory().toString());
     }
 
+    public static Drawable getAPKIcon(String path, Context context) {
+        if (context.getPackageManager().getPackageArchiveInfo(path, 0) != null) {
+            return context.getPackageManager().getPackageArchiveInfo(path, 0).applicationInfo.loadIcon(context.getPackageManager());
+        } else {
+            return null;
+        }
+    }
+
+    public static File getSelectedFilePath() {
+        return SuFile.open(mSelectedFilePath);
+    }
+
     public static int getOrientation(Activity activity) {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && activity.isInMultiWindowMode() ?
                 Configuration.ORIENTATION_PORTRAIT : activity.getResources().getConfiguration().orientation;
@@ -121,10 +137,6 @@ public class FilePicker {
         return mExtension;
     }
 
-    public static File getSelectedFilePath() {
-        return SuFile.open(mSelectedFilePath);
-    }
-
     public static String getFileSize(String path) {
         long mSize = SuFile.open(path).length() / 1024;
         long mDecimal = (SuFile.open(path).length() - 1024) / 1024;
@@ -139,12 +151,22 @@ public class FilePicker {
         File mFile = SuFile.open(path);
         if (mFile.exists()) {
             return Uri.fromFile(mFile);
+        } else {
+            return null;
         }
-        return null;
     }
 
-    public static void setExtension(String path) {
-        mExtension = path;
+    @RequiresApi(api = Build.VERSION_CODES.FROYO)
+    @SuppressLint("UseCompatLoadingForDrawables")
+    public static void setFileIcon(AppCompatImageButton icon, Drawable drawable, Context context) {
+        icon.setImageDrawable(drawable);
+        icon.setAlpha((float) 0.75);
+        icon.setColorFilter(isDarkTheme(context) ? context.getResources().getColor(R.color.colorWhite) :
+                context.getResources().getColor(R.color.colorBlack));
+    }
+
+    public static void setExtension(String extension) {
+        mExtension = extension;
     }
 
     public static void setSelectedFilePath(String path) {
