@@ -7,7 +7,7 @@
 
 A simple Android library to pick files from any directories on root enabled devices.
 
-`Root File Picker` is a simple and very basic file picker made mainly to satisfy the needs of [SmartPack-Kernel Manager](https://github.com/SmartPack/KernelProfiler) and other application developed by its [developer](https://github.com/sunilpaulmathew). It may not have much more features, except a decent interface and options to pick files from any part of the phone's storage. Also, as the name itself suggests, `Root File Picker` requires a rooted environment to work..
+`Root File Picker` is a simple and very basic file picker made mainly to satisfy the needs of [SmartPack-Kernel Manager](https://github.com/SmartPack/SmartPack-Kernel-Manager) and other application developed by its [developer](https://github.com/sunilpaulmathew). It may not have much more features, except a decent interface and options to pick files from any part of the phone's storage. Also, as the name itself suggests, `Root File Picker` requires a rooted environment to work..
 
 ## Download
 ```groovy
