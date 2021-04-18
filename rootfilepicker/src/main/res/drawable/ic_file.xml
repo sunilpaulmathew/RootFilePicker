@@ -1,4 +1,4 @@
-<vector xmlns:tools="http://schemas.android.com/tools"
+<vector android:alpha="0.75" xmlns:tools="http://schemas.android.com/tools"
     android:height="32dp" android:tint="@color/colorWhite"
     android:viewportHeight="24" android:viewportWidth="24"
     android:width="32dp" xmlns:android="http://schemas.android.com/apk/res/android"

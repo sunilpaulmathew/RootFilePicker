@@ -1,6 +1,5 @@
 package in.sunilpaulmathew.rootfilepicker.utils;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -9,7 +8,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.preference.PreferenceManager;
-import android.util.TypedValue;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.AppCompatImageButton;
@@ -68,7 +66,7 @@ public class FilePicker {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.FROYO)
-    public static boolean isDarkTheme(Context context) {
+    private static boolean isDarkTheme(Context context) {
         int currentNightMode = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
         return currentNightMode == Configuration.UI_MODE_NIGHT_YES;
     }
@@ -119,12 +117,6 @@ public class FilePicker {
                 Configuration.ORIENTATION_PORTRAIT : activity.getResources().getConfiguration().orientation;
     }
 
-    public static int getThemeAccentColor(Context context) {
-        TypedValue value = new TypedValue();
-        context.getTheme().resolveAttribute(R.attr.colorAccent, value, true);
-        return value.data;
-    }
-
     public static String getPath() {
         if (mPath == null) {
             return "/";
@@ -157,10 +149,8 @@ public class FilePicker {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.FROYO)
-    @SuppressLint("UseCompatLoadingForDrawables")
     public static void setFileIcon(AppCompatImageButton icon, Drawable drawable, Context context) {
         icon.setImageDrawable(drawable);
-        icon.setAlpha((float) 0.75);
         icon.setColorFilter(isDarkTheme(context) ? context.getResources().getColor(R.color.colorWhite) :
                 context.getResources().getColor(R.color.colorBlack));
     }

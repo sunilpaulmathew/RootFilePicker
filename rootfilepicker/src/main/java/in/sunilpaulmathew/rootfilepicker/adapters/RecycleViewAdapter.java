@@ -46,7 +46,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         if (SuFile.open(this.data.get(position)).isDirectory()) {
             holder.mIcon.setImageDrawable(holder.mTitle.getContext().getResources().getDrawable(R.drawable.ic_folder));
             holder.mIcon.setBackground(holder.mIcon.getContext().getResources().getDrawable(R.drawable.ic_circle));
-            holder.mIcon.setColorFilter(FilePicker.getThemeAccentColor(holder.mTitle.getContext()));
+            holder.mIcon.setColorFilter(holder.mTitle.getContext().getResources().getColor(R.color.colorWhite));
             holder.mDescription.setVisibility(View.GONE);
         } else {
             if (FilePicker.isImageFile(data.get(position))) {
@@ -70,6 +70,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
             }
             holder.mIcon.setBackground(null);
             holder.mDescription.setText(FilePicker.getFileSize(this.data.get(position)));
+            holder.mDescription.setVisibility(View.VISIBLE);
         }
         holder.mTitle.setText(SuFile.open(this.data.get(position)).getName());
     }
