@@ -34,8 +34,8 @@ public class MainActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 0 && data != null && FilePicker.getSelectedFilePath().exists()) {
-            File mSelectedFile = FilePicker.getSelectedFilePath();
+        if (requestCode == 0 && data != null && FilePicker.getSelectedFile().exists()) {
+            File mSelectedFile = FilePicker.getSelectedFile();
             new MaterialAlertDialogBuilder(this)
                     .setMessage(getString(R.string.select_question, mSelectedFile.getName()))
                     .setNegativeButton(getString(R.string.cancel), (dialogInterface, i) -> {

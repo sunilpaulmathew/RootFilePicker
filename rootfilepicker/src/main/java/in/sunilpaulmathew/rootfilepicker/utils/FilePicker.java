@@ -110,7 +110,7 @@ public class FilePicker {
         }
     }
 
-    public static File getSelectedFilePath() {
+    public static File getSelectedFile() {
         return SuFile.open(mSelectedFilePath);
     }
 
