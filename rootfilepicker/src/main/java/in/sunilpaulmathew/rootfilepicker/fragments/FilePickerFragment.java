@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
@@ -32,6 +33,7 @@ import in.sunilpaulmathew.rootfilepicker.utils.FilePicker;
  */
 public class FilePickerFragment extends androidx.fragment.app.Fragment {
 
+    private LinearLayout mProgress;
     private MaterialTextView mTitle;
     private RecyclerView mRecyclerView;
     private RecycleViewAdapter mRecycleViewAdapter;
@@ -46,8 +48,9 @@ public class FilePickerFragment extends androidx.fragment.app.Fragment {
         AppCompatImageButton mBack = mRootView.findViewById(R.id.back);
         mTitle = mRootView.findViewById(R.id.title);
         AppCompatImageButton mSortButton = mRootView.findViewById(R.id.sort);
-
+        mProgress = mRootView.findViewById(R.id.progress_layout);
         mRecyclerView = mRootView.findViewById(R.id.recycler_view);
+
         mRecyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), FilePicker.getOrientation(requireActivity()) == Configuration.ORIENTATION_LANDSCAPE ? 2 : 1));
         mRecycleViewAdapter = new RecycleViewAdapter(FilePicker.getData(requireActivity()));
         mRecyclerView.setAdapter(mRecycleViewAdapter);
@@ -108,6 +111,10 @@ public class FilePickerFragment extends androidx.fragment.app.Fragment {
     private void reload(Activity activity) {
         new AsyncTask<Void, Void, Void>() {
             @Override
+            protected void onPreExecute() {
+                mProgress.setVisibility(View.VISIBLE);
+            }
+            @Override
             protected Void doInBackground(Void... voids) {
                 mRecycleViewAdapter = new RecycleViewAdapter(FilePicker.getData(activity));
                 return null;
@@ -116,6 +123,7 @@ public class FilePickerFragment extends androidx.fragment.app.Fragment {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
+                mProgress.setVisibility(View.GONE);
                 mTitle.setText(FilePicker.isRoot() ? "Root" : FilePicker.isStorageRoot() ? "Storage Root" : SuFile.open(FilePicker.getPath()).getName().toUpperCase());
                 mRecyclerView.setAdapter(mRecycleViewAdapter);
             }

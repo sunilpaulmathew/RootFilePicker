@@ -1,2 +1,2 @@
 include(":demo", ":rootfilepicker")
-rootProject.name = "File Picker"
+rootProject.name = "Root File Picker"
