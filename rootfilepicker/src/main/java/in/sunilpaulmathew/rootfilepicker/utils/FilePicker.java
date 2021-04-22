@@ -39,7 +39,7 @@ public class FilePicker {
                     mDir.add(mFile.getAbsolutePath());
                 }
             }
-            Collections.sort(mDir);
+            Collections.sort(mDir, String.CASE_INSENSITIVE_ORDER);
             if (!getBoolean("az_order", true, activity)) {
                 Collections.reverse(mDir);
             }
@@ -50,7 +50,7 @@ public class FilePicker {
                     mFiles.add(mFile.getAbsolutePath());
                 }
             }
-            Collections.sort(mFiles);
+            Collections.sort(mFiles, String.CASE_INSENSITIVE_ORDER);
             if (!getBoolean("az_order", true, activity)) {
                 Collections.reverse(mFiles);
             }
@@ -75,7 +75,7 @@ public class FilePicker {
         if (getExtension() == null) {
             return true;
         } else {
-            return path.endsWith(getExtension());
+            return getExtFromPath(path).equals(getExtension());
         }
     }
 
@@ -137,6 +137,10 @@ public class FilePicker {
         } else {
             return mSize  + " KB";
         }
+    }
+
+    public static String getExtFromPath(String path) {
+        return android.webkit.MimeTypeMap.getFileExtensionFromUrl(path);
     }
 
     public static Uri getImageURI(String path) {

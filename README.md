@@ -1,6 +1,6 @@
 # Root File Picker
 
-[![](https://img.shields.io/badge/Root%20File%20&%20Picker%20-v0.4-green)](https://github.com/sunilpaulmathew/RootFilePicker/releases)
+[![](https://img.shields.io/badge/Root%20File%20&%20Picker%20-v0.5-green)](https://github.com/sunilpaulmathew/RootFilePicker/releases)
 ![](https://img.shields.io/github/languages/top/sunilpaulmathew/RootFilePicker)
 ![](https://img.shields.io/github/contributors/sunilpaulmathew/RootFilePicker)
 ![](https://img.shields.io/github/license/sunilpaulmathew/RootFilePicker)
@@ -22,7 +22,7 @@ repositories {
     maven { url 'https://jitpack.io' }
 }
 dependencies {
-   implementation 'com.github.sunilpaulmathew:RootFilePicker:v0.4'
+   implementation 'com.github.sunilpaulmathew:RootFilePicker:v0.5'
 }
 ```
 
@@ -42,7 +42,7 @@ FilePicker.setPath("/");
 
 ### Target specific file extension
 ```
-FilePicker.setExtension(".zip");
+FilePicker.setExtension("zip");
 ```
 
 ### & finally do something with the selected file (FilePicker.getSelectedFile()) onActivityResult
