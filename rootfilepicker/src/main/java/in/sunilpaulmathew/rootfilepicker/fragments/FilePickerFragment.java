@@ -24,6 +24,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.textview.MaterialTextView;
 import com.topjohnwu.superuser.io.SuFile;
 
+import java.util.Objects;
+
 import in.sunilpaulmathew.rootfilepicker.R;
 import in.sunilpaulmathew.rootfilepicker.adapters.RecycleViewAdapter;
 import in.sunilpaulmathew.rootfilepicker.utils.FilePicker;
@@ -91,7 +93,7 @@ public class FilePickerFragment extends androidx.fragment.app.Fragment {
                 if (FilePicker.isRoot()) {
                     finish();
                 } else {
-                    FilePicker.setPath(SuFile.open(FilePicker.getPath()).getParentFile().getPath());
+                    FilePicker.setPath(Objects.requireNonNull(SuFile.open(FilePicker.getPath()).getParentFile()).getPath());
                     reload(requireActivity());
                 }
             }

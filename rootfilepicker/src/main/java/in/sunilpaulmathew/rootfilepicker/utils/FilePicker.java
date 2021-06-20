@@ -32,7 +32,6 @@ public class FilePicker {
     public static List<String> getData(Activity activity) {
         List<String> mData = new ArrayList<>(), mDir = new ArrayList<>(), mFiles = new ArrayList<>();
         try {
-            mData.clear();
             // Add directories
             for (File mFile : Objects.requireNonNull(SuFile.open(getPath()).listFiles())) {
                 if (mFile.isDirectory()) {
@@ -81,15 +80,6 @@ public class FilePicker {
 
     public static boolean getBoolean(String name, boolean defaults, Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(name, defaults);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
-    public static void saveBoolean(String name, boolean value, Context context) {
-        PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(name, value).apply();
-    }
-
-    public static void setPath(String path) {
-        mPath = path;
     }
 
     public static boolean isRoot() {
@@ -150,6 +140,15 @@ public class FilePicker {
         } else {
             return null;
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
+    public static void saveBoolean(String name, boolean value, Context context) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(name, value).apply();
+    }
+
+    public static void setPath(String path) {
+        mPath = path;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.FROYO)
