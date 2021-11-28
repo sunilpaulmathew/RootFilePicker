@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -25,6 +26,9 @@ public class MainActivity extends AppCompatActivity {
 
         MaterialCardView mCard = findViewById(R.id.demo_card);
         mCard.setOnClickListener(v -> {
+            FilePicker.setExtension(null);
+            FilePicker.setPath(null);
+            FilePicker.setAccentColor(ContextCompat.getColor(this, R.color.colorBlue));
             Intent intent = new Intent(this, FilePickerActivity.class);
             startActivityForResult(intent, 0);
         });

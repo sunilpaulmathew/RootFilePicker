@@ -1,6 +1,5 @@
 package in.sunilpaulmathew.rootfilepicker.adapters;
 
-import android.annotation.SuppressLint;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textview.MaterialTextView;
@@ -40,33 +40,32 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if (SuFile.open(this.data.get(position)).isDirectory()) {
-            holder.mIcon.setImageDrawable(holder.mTitle.getContext().getResources().getDrawable(R.drawable.ic_folder));
-            holder.mIcon.setBackground(holder.mIcon.getContext().getResources().getDrawable(R.drawable.ic_circle));
-            holder.mIcon.setColorFilter(holder.mTitle.getContext().getResources().getColor(R.color.colorWhite));
+            holder.mIcon.setImageDrawable(ContextCompat.getDrawable(holder.mIcon.getContext(), R.drawable.ic_folder));
+            holder.mIcon.setBackground(ContextCompat.getDrawable(holder.mIcon.getContext(), R.drawable.ic_circle));
+            holder.mIcon.setColorFilter(FilePicker.getAccentColor() != Integer.MIN_VALUE ? FilePicker.getAccentColor() : ContextCompat.getColor(holder.mIcon.getContext(), R.color.colorWhite));
             holder.mDescription.setVisibility(View.GONE);
         } else {
             if (FilePicker.isImageFile(data.get(position))) {
                 if (FilePicker.getImageURI(data.get(position)) != null) {
                     holder.mIcon.setImageURI(FilePicker.getImageURI(data.get(position)));
                 } else {
-                    FilePicker.setFileIcon(holder.mIcon, holder.mIcon.getContext().getResources().getDrawable(R.drawable.ic_image), holder.mIcon.getContext());
+                    FilePicker.setFileIcon(holder.mIcon, ContextCompat.getDrawable(holder.mIcon.getContext(), R.drawable.ic_image), holder.mIcon.getContext());
                 }
             } else if (data.get(position).endsWith(".apk")) {
                 if (FilePicker.getAPKIcon(data.get(position), holder.mIcon.getContext()) != null) {
                     holder.mIcon.setImageDrawable(FilePicker.getAPKIcon(data.get(position), holder.mIcon.getContext()));
                 } else {
-                    FilePicker.setFileIcon(holder.mIcon, holder.mIcon.getContext().getResources().getDrawable(R.drawable.ic_android), holder.mIcon.getContext());
+                    FilePicker.setFileIcon(holder.mIcon, ContextCompat.getDrawable(holder.mIcon.getContext(), R.drawable.ic_android), holder.mIcon.getContext());
                 }
             } else if (data.get(position).endsWith(".xml")) {
-                FilePicker.setFileIcon(holder.mIcon, holder.mIcon.getContext().getResources().getDrawable(R.drawable.ic_xml), holder.mIcon.getContext());
+                FilePicker.setFileIcon(holder.mIcon, ContextCompat.getDrawable(holder.mIcon.getContext(), R.drawable.ic_xml), holder.mIcon.getContext());
             } else if (data.get(position).endsWith(".zip")) {
-                FilePicker.setFileIcon(holder.mIcon, holder.mIcon.getContext().getResources().getDrawable(R.drawable.ic_archive), holder.mIcon.getContext());
+                FilePicker.setFileIcon(holder.mIcon, ContextCompat.getDrawable(holder.mIcon.getContext(), R.drawable.ic_archive), holder.mIcon.getContext());
             } else {
-                FilePicker.setFileIcon(holder.mIcon, holder.mIcon.getContext().getResources().getDrawable(R.drawable.ic_file), holder.mIcon.getContext());
+                FilePicker.setFileIcon(holder.mIcon, ContextCompat.getDrawable(holder.mIcon.getContext(), R.drawable.ic_file), holder.mIcon.getContext());
             }
             holder.mIcon.setBackground(null);
             holder.mDescription.setText(FilePicker.getFileSize(this.data.get(position)));

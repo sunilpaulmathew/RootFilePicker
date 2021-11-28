@@ -3,6 +3,7 @@
     package="in.sunilpaulmathew.rootfilepicker">
 
     <application >
-        <activity android:name=".activities.FilePickerActivity" />
+        <activity android:name=".activities.FilePickerActivity"
+            android:exported="false" />
     </application>
 </manifest>

@@ -1,12 +1,12 @@
 package in.sunilpaulmathew.rootfilepicker.fragments;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -25,6 +25,8 @@ import com.google.android.material.textview.MaterialTextView;
 import com.topjohnwu.superuser.io.SuFile;
 
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import in.sunilpaulmathew.rootfilepicker.R;
 import in.sunilpaulmathew.rootfilepicker.adapters.RecycleViewAdapter;
@@ -41,7 +43,6 @@ public class FilePickerFragment extends androidx.fragment.app.Fragment {
     private RecycleViewAdapter mRecycleViewAdapter;
 
     @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
-    @SuppressLint("StringFormatInvalid")
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -52,6 +53,11 @@ public class FilePickerFragment extends androidx.fragment.app.Fragment {
         AppCompatImageButton mSortButton = mRootView.findViewById(R.id.sort);
         mProgress = mRootView.findViewById(R.id.progress_layout);
         mRecyclerView = mRootView.findViewById(R.id.recycler_view);
+
+        if (FilePicker.getAccentColor() != Integer.MIN_VALUE) {
+            mBack.setColorFilter(FilePicker.getAccentColor());
+            mTitle.setTextColor(FilePicker.getAccentColor());
+        }
 
         mRecyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), FilePicker.getOrientation(requireActivity()) == Configuration.ORIENTATION_LANDSCAPE ? 2 : 1));
         mRecycleViewAdapter = new RecycleViewAdapter(FilePicker.getData(requireActivity()));
@@ -66,7 +72,7 @@ public class FilePickerFragment extends androidx.fragment.app.Fragment {
             } else {
                 Intent intent = new Intent();
                 FilePicker.setSelectedFilePath(FilePicker.getData(requireActivity()).get(position));
-                requireActivity().setResult(0, intent);
+                requireActivity().setResult(Integer.MIN_VALUE, intent);
                 finish();
             }
         });
@@ -103,33 +109,21 @@ public class FilePickerFragment extends androidx.fragment.app.Fragment {
     }
 
     private void finish() {
-        FilePicker.setExtension(null);
-        FilePicker.setPath(null);
         requireActivity().finish();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
-    @SuppressLint("StaticFieldLeak")
     private void reload(Activity activity) {
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected void onPreExecute() {
-                mProgress.setVisibility(View.VISIBLE);
-            }
-            @Override
-            protected Void doInBackground(Void... voids) {
-                mRecycleViewAdapter = new RecycleViewAdapter(FilePicker.getData(activity));
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
+        ExecutorService executors = Executors.newSingleThreadExecutor();
+        mProgress.setVisibility(View.VISIBLE);
+        executors.execute(() -> {
+            mRecycleViewAdapter = new RecycleViewAdapter(FilePicker.getData(activity));
+            new Handler(Looper.getMainLooper()).post(() -> {
+                mRecyclerView.setAdapter(mRecycleViewAdapter);
                 mProgress.setVisibility(View.GONE);
                 mTitle.setText(FilePicker.isRoot() ? "Root" : FilePicker.isStorageRoot() ? "Storage Root" : SuFile.open(FilePicker.getPath()).getName().toUpperCase());
-                mRecyclerView.setAdapter(mRecycleViewAdapter);
-            }
-        }.execute();
+                if (!executors.isShutdown()) executors.shutdown();
+            });
+        });
     }
     
 }
