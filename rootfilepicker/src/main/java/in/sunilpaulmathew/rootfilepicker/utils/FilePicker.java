@@ -2,7 +2,6 @@ package in.sunilpaulmathew.rootfilepicker.utils;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -23,7 +22,6 @@ import java.util.List;
 import java.util.Objects;
 
 import in.sunilpaulmathew.rootfilepicker.R;
-import in.sunilpaulmathew.rootfilepicker.activities.FilePickerActivity;
 
 /*
  * Created by sunilpaulmathew <sunil.kde@gmail.com> on April 15, 2021
