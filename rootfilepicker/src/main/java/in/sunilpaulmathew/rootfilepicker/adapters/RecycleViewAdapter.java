@@ -45,7 +45,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         if (SuFile.open(this.data.get(position)).isDirectory()) {
             holder.mIcon.setImageDrawable(ContextCompat.getDrawable(holder.mIcon.getContext(), R.drawable.ic_folder));
             holder.mIcon.setBackground(ContextCompat.getDrawable(holder.mIcon.getContext(), R.drawable.ic_circle));
-            holder.mIcon.setColorFilter(FilePicker.getAccentColor() != Integer.MIN_VALUE ? FilePicker.getAccentColor() : ContextCompat.getColor(holder.mIcon.getContext(), R.color.colorWhite));
+            holder.mIcon.setColorFilter(FilePicker.getAccentColor(holder.mIcon.getContext()));
             holder.mDescription.setVisibility(View.GONE);
         } else {
             if (FilePicker.isImageFile(data.get(position))) {

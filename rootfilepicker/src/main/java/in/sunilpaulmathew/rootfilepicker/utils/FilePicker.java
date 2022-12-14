@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.util.TypedValue;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.AppCompatImageButton;
@@ -104,8 +105,14 @@ public class FilePicker {
         return SuFile.open(mSelectedFilePath);
     }
 
-    public static int getAccentColor() {
-        return mAccentColor;
+    public static int getAccentColor(Context context) {
+        if (mAccentColor != Integer.MIN_VALUE) {
+            return mAccentColor;
+        } else {
+            TypedValue value = new TypedValue();
+            context.getTheme().resolveAttribute(R.attr.colorAccent, value, true);
+            return value.data;
+        }
     }
 
     public static int getOrientation(Activity activity) {

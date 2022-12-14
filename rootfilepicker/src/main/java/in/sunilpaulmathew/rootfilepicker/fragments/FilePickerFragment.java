@@ -54,9 +54,9 @@ public class FilePickerFragment extends androidx.fragment.app.Fragment {
         mProgress = mRootView.findViewById(R.id.progress_layout);
         mRecyclerView = mRootView.findViewById(R.id.recycler_view);
 
-        if (FilePicker.getAccentColor() != Integer.MIN_VALUE) {
-            mBack.setColorFilter(FilePicker.getAccentColor());
-            mTitle.setTextColor(FilePicker.getAccentColor());
+        if (FilePicker.getAccentColor(requireActivity()) != Integer.MIN_VALUE) {
+            mBack.setColorFilter(FilePicker.getAccentColor(requireActivity()));
+            mTitle.setTextColor(FilePicker.getAccentColor(requireActivity()));
         }
 
         mRecyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), FilePicker.getOrientation(requireActivity()) == Configuration.ORIENTATION_LANDSCAPE ? 2 : 1));
