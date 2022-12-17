@@ -6,11 +6,11 @@ plugins {
 android {
     compileSdkVersion 33
     buildToolsVersion "30.0.3"
+    namespace 'in.sunilpaulmathew.rootfilepicker'
 
     defaultConfig {
         consumerProguardFiles("proguard-rules.pro")
     }
-    namespace 'in.sunilpaulmathew.rootfilepicker'
 }
 
 dependencies {

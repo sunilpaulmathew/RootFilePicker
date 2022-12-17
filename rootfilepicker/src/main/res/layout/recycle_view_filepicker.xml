@@ -11,7 +11,8 @@
             android:layout_height="36dp"
             android:layout_gravity="center_vertical"
             android:scaleType="fitCenter"
-            android:background="@null" />
+            android:background="@null"
+            android:clickable="false" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -19,6 +20,7 @@
             android:layout_marginStart="40dp"
             android:layout_gravity="center"
             android:orientation="vertical"
+            android:clickable="false"
             android:gravity="center">
 
                 <com.google.android.material.textview.MaterialTextView
