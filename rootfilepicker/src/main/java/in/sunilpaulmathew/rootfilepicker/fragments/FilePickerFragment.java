@@ -11,12 +11,12 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,7 +37,7 @@ import in.sunilpaulmathew.rootfilepicker.utils.FilePicker;
  */
 public class FilePickerFragment extends androidx.fragment.app.Fragment {
 
-    private LinearLayout mProgress;
+    private LinearLayoutCompat mProgress;
     private MaterialTextView mTitle;
     private RecyclerView mRecyclerView;
     private RecycleViewAdapter mRecycleViewAdapter;
