@@ -63,11 +63,11 @@ public class FilePickerFragment extends androidx.fragment.app.Fragment {
         mFilePickerAdapter = new FilePickerAdapter(FilePicker.getData(requireActivity()));
         mRecyclerView.setAdapter(mFilePickerAdapter);
 
-        mTitle.setText(FilePicker.isRoot() ? "Root" : FilePicker.isStorageRoot() ? "Storage Root" : SuFile.open(FilePicker.getPath()).getName().toUpperCase());
+        mTitle.setText(FilePicker.isRoot(requireActivity()) ? "Root" : FilePicker.isStorageRoot(requireActivity()) ? "Storage Root" : SuFile.open(FilePicker.getPath(requireActivity())).getName().toUpperCase());
 
         mFilePickerAdapter.setOnItemClickListener((position, v) -> {
             if (SuFile.open(FilePicker.getData(requireActivity()).get(position)).isDirectory()) {
-                FilePicker.setPath(FilePicker.getData(requireActivity()).get(position));
+                FilePicker.saveString("path", FilePicker.getData(requireActivity()).get(position), requireActivity());
                 reload(requireActivity());
             } else {
                 Intent intent = new Intent();
@@ -96,10 +96,10 @@ public class FilePickerFragment extends androidx.fragment.app.Fragment {
             @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
             @Override
             public void handleOnBackPressed() {
-                if (FilePicker.isRoot()) {
+                if (FilePicker.isRoot(requireActivity())) {
                     finish();
                 } else {
-                    FilePicker.setPath(Objects.requireNonNull(SuFile.open(FilePicker.getPath()).getParentFile()).getPath());
+                    FilePicker.saveString("path", Objects.requireNonNull(SuFile.open(FilePicker.getPath(requireActivity())).getParentFile()).getPath(), requireActivity());
                     reload(requireActivity());
                 }
             }
@@ -120,7 +120,7 @@ public class FilePickerFragment extends androidx.fragment.app.Fragment {
             new Handler(Looper.getMainLooper()).post(() -> {
                 mRecyclerView.setAdapter(mFilePickerAdapter);
                 mProgress.setVisibility(View.GONE);
-                mTitle.setText(FilePicker.isRoot() ? "Root" : FilePicker.isStorageRoot() ? "Storage Root" : SuFile.open(FilePicker.getPath()).getName().toUpperCase());
+                mTitle.setText(FilePicker.isRoot(activity) ? "Root" : FilePicker.isStorageRoot(activity) ? "Storage Root" : SuFile.open(FilePicker.getPath(activity)).getName().toUpperCase());
                 if (!executors.isShutdown()) executors.shutdown();
             });
         });

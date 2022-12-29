@@ -7,7 +7,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.core.content.ContextCompat;
 
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -26,13 +25,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         MaterialCardView mCard = findViewById(R.id.demo_card);
-        mCard.setOnClickListener(v -> new FilePicker(
-                null,
-                null,
-                ContextCompat.getColor(this, R.color.colorBlue),
-                filePickerResultLauncher,
-                this).launch()
-        );
+        mCard.setOnClickListener(v -> {
+            FilePicker filePicker = new FilePicker(
+                    filePickerResultLauncher /* in which the result handled; usage: mandatory */,
+                    this /* your activity or context; usage: mandatory */
+            );
+            filePicker.setExtension(null); /* target specific file extension; usage: optional; default: null */
+            filePicker.setPath(null); /* path to open when launching  file picker; usage: optional; default: null */
+            filePicker.setAccentColor(Integer.MIN_VALUE); /* apply custom accent color; usage: optional; default: ContextCompat.getColor(this, R.color.colorBlue) */
+            filePicker.launch();
+        });
     }
 
     ActivityResultLauncher<Intent> filePickerResultLauncher = registerForActivityResult(

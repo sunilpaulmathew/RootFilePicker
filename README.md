@@ -34,13 +34,14 @@ dependencies {
 ### Launch File Picker
 
 ```
-new FilePicker(
-    extention, /* target specific file extension */
-    path, /* path to open on launching  file picker */
-    accentColor, /* apply custom accent color */
-    activityResultLauncher, /* in which the result handled */
-    context /* */
-    ).launch()
+FilePicker filePicker = new FilePicker(
+    activityResultLauncher /* in which the result handled; usage: mandatory */,
+    context /* your activity or context; usage: mandatory */
+);
+filePicker.setExtension(extention); /* target specific file extension; usage: optional; default: null */
+filePicker.setPath(path); /* path to open when launching  file picker; usage: optional; default: null */
+filePicker.setAccentColor(accentColor); /* apply custom accent color; usage: optional; default: ContextCompat.getColor(this, R.color.colorBlue) */
+filePicker.launch();
 ```
 
 ### & do something with the selected file (FilePicker.getSelectedFile()) on activityResultLauncher

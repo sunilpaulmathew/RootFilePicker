@@ -37,11 +37,7 @@ public class FilePicker {
     public Context mContext;
     private static String mExtension = null, mPath = null, mSelectedFilePath = null;
 
-    public FilePicker(String ext, String path, int color, ActivityResultLauncher<Intent>
-            result, Context context) {
-        mExtension = ext;
-        mPath = path;
-        mAccentColor = color;
+    public FilePicker(ActivityResultLauncher<Intent> result, Context context) {
         mResult = result;
         mContext = context;
     }
@@ -50,7 +46,7 @@ public class FilePicker {
         List<String> mData = new ArrayList<>(), mDir = new ArrayList<>(), mFiles = new ArrayList<>();
         try {
             // Add directories
-            for (File mFile : Objects.requireNonNull(SuFile.open(getPath()).listFiles())) {
+            for (File mFile : Objects.requireNonNull(SuFile.open(getPath(activity)).listFiles())) {
                 if (mFile.isDirectory()) {
                     mDir.add(mFile.getAbsolutePath());
                 }
@@ -61,7 +57,7 @@ public class FilePicker {
             }
             mData.addAll(mDir);
             // Add files
-            for (File mFile : Objects.requireNonNull(SuFile.open(getPath()).listFiles())) {
+            for (File mFile : Objects.requireNonNull(SuFile.open(getPath(activity)).listFiles())) {
                 if (mFile.isFile() && isSupportedFile(mFile.getAbsolutePath())) {
                     mFiles.add(mFile.getAbsolutePath());
                 }
@@ -102,12 +98,12 @@ public class FilePicker {
         return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(name, defaults);
     }
 
-    public static boolean isRoot() {
-        return getPath().equals("/");
+    public static boolean isRoot(Context context) {
+        return getPath(context).equals("/");
     }
 
-    public static boolean isStorageRoot() {
-        return getPath().equals(Environment.getExternalStorageDirectory().toString());
+    public static boolean isStorageRoot(Context context) {
+        return getPath(context).equals(Environment.getExternalStorageDirectory().toString());
     }
 
     public static Drawable getAPKIcon(String path, Context context) {
@@ -137,11 +133,13 @@ public class FilePicker {
                 Configuration.ORIENTATION_PORTRAIT : activity.getResources().getConfiguration().orientation;
     }
 
-    public static String getPath() {
-        if (mPath == null) {
-            return "/";
-        } else {
+    public static String getPath(Context context) {
+        if (SuFile.open(getString("path", "/", context)).exists()) {
+            return getString("path", "/", context);
+        } else if (mPath != null && SuFile.open(mPath).exists()) {
             return mPath;
+        } else {
+            return "/";
         }
     }
 
@@ -153,6 +151,10 @@ public class FilePicker {
         } else {
             return mSize  + " KB";
         }
+    }
+
+    public static String getString(String name, String defaults, Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getString(name, defaults);
     }
 
     public static Uri getImageURI(String path) {
@@ -169,6 +171,11 @@ public class FilePicker {
         PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(name, value).apply();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
+    public static void saveString(String name, String value, Context context) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putString(name, value).apply();
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.FROYO)
     public static void setFileIcon(AppCompatImageButton icon, Drawable drawable, Context context) {
         icon.setImageDrawable(drawable);
@@ -176,17 +183,27 @@ public class FilePicker {
                 ContextCompat.getColor(context, R.color.colorBlack));
     }
 
-    public static void setPath(String path) {
-        mPath = path;
-    }
-
     public static void setSelectedFilePath(String path) {
         mSelectedFilePath = path;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
     public void launch() {
+        saveString("path", mPath, mContext);
         Intent intent = new Intent(mContext, FilePickerActivity.class);
         mResult.launch(intent);
+    }
+
+    public void setAccentColor(int color) {
+        mAccentColor = color;
+    }
+
+    public void setExtension(String ext) {
+        mExtension = ext;
+    }
+
+    public void setPath(String path) {
+        mPath = path;
     }
 
 }
