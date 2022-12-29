@@ -34,35 +34,25 @@ dependencies {
 ### Launch File Picker
 
 ```
-Intent intent = new Intent(this, FilePickerActivity.class);
-startActivityForResult(intent, 0);
+new FilePicker(
+    extention, /* target specific file extension */
+    path, /* path to open on launching  file picker */
+    accentColor, /* apply custom accent color */
+    activityResultLauncher, /* in which the result handled */
+    context /* */
+    ).launch()
 ```
 
-### Set path to open on launching  file picker (optional)
-```
-FilePicker.setPath("/");
-```
-
-### Apply custom accent color (optional)
-```
-FilePicker.setAccentColor(color");
-```
-
-### Target specific file extension (optional)
-```
-FilePicker.setExtension("zip");
-```
-
-### & finally do something with the selected file (FilePicker.getSelectedFile()) onActivityResult
+### & do something with the selected file (FilePicker.getSelectedFile()) on activityResultLauncher
 
 ```
-@Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == 0 && data != null && FilePicker.getSelectedFile().exists()) {
+ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
+    new ActivityResultContracts.StartActivityForResult(),
+    result -> {
+        if (result.getData() != null && FilePicker.getSelectedFile().exists()) {
             // Do something with the selected file
             File mSelectedFile = FilePicker.getSelectedFile();
         }
     }
+);
 ```
