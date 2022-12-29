@@ -22,13 +22,13 @@ import in.sunilpaulmathew.rootfilepicker.utils.FilePicker;
 /*
  * Created by sunilpaulmathew <sunil.kde@gmail.com> on April 15, 2021
  */
-public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.ViewHolder> {
+public class FilePickerAdapter extends RecyclerView.Adapter<FilePickerAdapter.ViewHolder> {
 
     private static ClickListener clickListener;
 
     private final List<String> data;
 
-    public RecycleViewAdapter(List<String> data) {
+    public FilePickerAdapter(List<String> data) {
         this.data = data;
     }
 
@@ -98,7 +98,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
     }
 
     public void setOnItemClickListener(ClickListener clickListener) {
-        RecycleViewAdapter.clickListener = clickListener;
+        FilePickerAdapter.clickListener = clickListener;
     }
 
     public interface ClickListener {

@@ -2,6 +2,7 @@ package in.sunilpaulmathew.rootfilepicker.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -10,6 +11,7 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.TypedValue;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.core.content.ContextCompat;
@@ -23,14 +25,26 @@ import java.util.List;
 import java.util.Objects;
 
 import in.sunilpaulmathew.rootfilepicker.R;
+import in.sunilpaulmathew.rootfilepicker.activities.FilePickerActivity;
 
 /*
  * Created by sunilpaulmathew <sunil.kde@gmail.com> on April 15, 2021
  */
 public class FilePicker {
 
+    private static ActivityResultLauncher<Intent> mResult = null;
     private static int mAccentColor = Integer.MIN_VALUE;
+    public Context mContext;
     private static String mExtension = null, mPath = null, mSelectedFilePath = null;
+
+    public FilePicker(String ext, String path, int color, ActivityResultLauncher<Intent>
+            result, Context context) {
+        mExtension = ext;
+        mPath = path;
+        mAccentColor = color;
+        mResult = result;
+        mContext = context;
+    }
 
     public static List<String> getData(Activity activity) {
         List<String> mData = new ArrayList<>(), mDir = new ArrayList<>(), mFiles = new ArrayList<>();
@@ -77,7 +91,10 @@ public class FilePicker {
         if (mExtension == null) {
             return true;
         } else {
-            return getExtFromPath(path).equals(mExtension);
+            if (!mExtension.startsWith(".")) {
+                mExtension = "." + mExtension;
+            }
+            return path.endsWith(mExtension);
         }
     }
 
@@ -138,10 +155,6 @@ public class FilePicker {
         }
     }
 
-    public static String getExtFromPath(String path) {
-        return android.webkit.MimeTypeMap.getFileExtensionFromUrl(path);
-    }
-
     public static Uri getImageURI(String path) {
         File mFile = SuFile.open(path);
         if (mFile.exists()) {
@@ -156,18 +169,6 @@ public class FilePicker {
         PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(name, value).apply();
     }
 
-    public static void setAccentColor(int accentColor) {
-        mAccentColor = accentColor;
-    }
-
-    public static void setExtension(String extension) {
-        mExtension = extension;
-    }
-
-    public static void setPath(String path) {
-        mPath = path;
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.FROYO)
     public static void setFileIcon(AppCompatImageButton icon, Drawable drawable, Context context) {
         icon.setImageDrawable(drawable);
@@ -175,8 +176,17 @@ public class FilePicker {
                 ContextCompat.getColor(context, R.color.colorBlack));
     }
 
+    public static void setPath(String path) {
+        mPath = path;
+    }
+
     public static void setSelectedFilePath(String path) {
         mSelectedFilePath = path;
+    }
+
+    public void launch() {
+        Intent intent = new Intent(mContext, FilePickerActivity.class);
+        mResult.launch(intent);
     }
 
 }

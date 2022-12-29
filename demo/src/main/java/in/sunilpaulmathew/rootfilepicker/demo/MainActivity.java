@@ -3,6 +3,8 @@ package in.sunilpaulmathew.rootfilepicker.demo;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
@@ -25,29 +27,29 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         MaterialCardView mCard = findViewById(R.id.demo_card);
-        mCard.setOnClickListener(v -> {
-            FilePicker.setExtension(null);
-            FilePicker.setPath(null);
-            FilePicker.setAccentColor(ContextCompat.getColor(this, R.color.colorBlue));
-            Intent intent = new Intent(this, FilePickerActivity.class);
-            startActivityForResult(intent, 0);
-        });
+        mCard.setOnClickListener(v -> new FilePicker(
+                null,
+                null,
+                ContextCompat.getColor(this, R.color.colorBlue),
+                filePickerResultLauncher,
+                this).launch()
+        );
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == 0 && data != null && FilePicker.getSelectedFile().exists()) {
-            File mSelectedFile = FilePicker.getSelectedFile();
-            new MaterialAlertDialogBuilder(this)
-                    .setMessage(getString(R.string.select_question, mSelectedFile.getName()))
-                    .setNegativeButton(getString(R.string.cancel), (dialogInterface, i) -> {
-                    })
-                    .setPositiveButton(getString(R.string.select), (dialogInterface, i) -> {
-                        // Do something
-                    }).show();
-        }
-    }
+    ActivityResultLauncher<Intent> filePickerResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getData() != null && FilePicker.getSelectedFile().exists()) {
+                    File mSelectedFile = FilePicker.getSelectedFile();
+                    new MaterialAlertDialogBuilder(this)
+                            .setMessage(getString(R.string.select_question, mSelectedFile.getName()))
+                            .setNegativeButton(getString(R.string.cancel), (dialogInterface, i) -> {
+                            })
+                            .setPositiveButton(getString(R.string.select), (dialogInterface, i) -> {
+                                // Do your task
+                            }).show();
+                }
+            }
+    );
 
 }

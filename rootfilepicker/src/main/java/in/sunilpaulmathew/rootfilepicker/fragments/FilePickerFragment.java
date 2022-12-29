@@ -29,7 +29,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import in.sunilpaulmathew.rootfilepicker.R;
-import in.sunilpaulmathew.rootfilepicker.adapters.RecycleViewAdapter;
+import in.sunilpaulmathew.rootfilepicker.adapters.FilePickerAdapter;
 import in.sunilpaulmathew.rootfilepicker.utils.FilePicker;
 
 /*
@@ -40,7 +40,7 @@ public class FilePickerFragment extends androidx.fragment.app.Fragment {
     private LinearLayoutCompat mProgress;
     private MaterialTextView mTitle;
     private RecyclerView mRecyclerView;
-    private RecycleViewAdapter mRecycleViewAdapter;
+    private FilePickerAdapter mFilePickerAdapter;
 
     @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
     @Nullable
@@ -60,12 +60,12 @@ public class FilePickerFragment extends androidx.fragment.app.Fragment {
         }
 
         mRecyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), FilePicker.getOrientation(requireActivity()) == Configuration.ORIENTATION_LANDSCAPE ? 2 : 1));
-        mRecycleViewAdapter = new RecycleViewAdapter(FilePicker.getData(requireActivity()));
-        mRecyclerView.setAdapter(mRecycleViewAdapter);
+        mFilePickerAdapter = new FilePickerAdapter(FilePicker.getData(requireActivity()));
+        mRecyclerView.setAdapter(mFilePickerAdapter);
 
         mTitle.setText(FilePicker.isRoot() ? "Root" : FilePicker.isStorageRoot() ? "Storage Root" : SuFile.open(FilePicker.getPath()).getName().toUpperCase());
 
-        mRecycleViewAdapter.setOnItemClickListener((position, v) -> {
+        mFilePickerAdapter.setOnItemClickListener((position, v) -> {
             if (SuFile.open(FilePicker.getData(requireActivity()).get(position)).isDirectory()) {
                 FilePicker.setPath(FilePicker.getData(requireActivity()).get(position));
                 reload(requireActivity());
@@ -116,9 +116,9 @@ public class FilePickerFragment extends androidx.fragment.app.Fragment {
         ExecutorService executors = Executors.newSingleThreadExecutor();
         mProgress.setVisibility(View.VISIBLE);
         executors.execute(() -> {
-            mRecycleViewAdapter = new RecycleViewAdapter(FilePicker.getData(activity));
+            mFilePickerAdapter = new FilePickerAdapter(FilePicker.getData(activity));
             new Handler(Looper.getMainLooper()).post(() -> {
-                mRecyclerView.setAdapter(mRecycleViewAdapter);
+                mRecyclerView.setAdapter(mFilePickerAdapter);
                 mProgress.setVisibility(View.GONE);
                 mTitle.setText(FilePicker.isRoot() ? "Root" : FilePicker.isStorageRoot() ? "Storage Root" : SuFile.open(FilePicker.getPath()).getName().toUpperCase());
                 if (!executors.isShutdown()) executors.shutdown();
