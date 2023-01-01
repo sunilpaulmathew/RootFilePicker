@@ -1,5 +1,6 @@
 package in.sunilpaulmathew.rootfilepicker.demo;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     ActivityResultLauncher<Intent> filePickerResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
-                if (result.getData() != null && FilePicker.getSelectedFile().exists()) {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null && FilePicker.getSelectedFile().exists()) {
                     File mSelectedFile = FilePicker.getSelectedFile();
                     new MaterialAlertDialogBuilder(this)
                             .setMessage(getString(R.string.select_question, mSelectedFile.getName()))

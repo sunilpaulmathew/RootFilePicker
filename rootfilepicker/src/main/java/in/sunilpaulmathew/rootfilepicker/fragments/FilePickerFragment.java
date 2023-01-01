@@ -72,7 +72,7 @@ public class FilePickerFragment extends androidx.fragment.app.Fragment {
             } else {
                 Intent intent = new Intent();
                 FilePicker.setSelectedFilePath(FilePicker.getData(requireActivity()).get(position));
-                requireActivity().setResult(Integer.MIN_VALUE, intent);
+                requireActivity().setResult(Activity.RESULT_OK, intent);
                 finish();
             }
         });

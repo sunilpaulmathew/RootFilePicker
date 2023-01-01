@@ -50,7 +50,7 @@ filePicker.launch();
 ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
     new ActivityResultContracts.StartActivityForResult(),
     result -> {
-        if (result.getData() != null && FilePicker.getSelectedFile().exists()) {
+        if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null && FilePicker.getSelectedFile().exists()) {
             // Do something with the selected file
             File mSelectedFile = FilePicker.getSelectedFile();
         }
