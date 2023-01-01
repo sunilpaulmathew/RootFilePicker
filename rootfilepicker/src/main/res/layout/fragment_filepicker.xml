@@ -55,6 +55,7 @@
             android:layout_height="20dp"
             style="?android:attr/progressBarStyleHorizontal"
             android:background="@color/colorBlack"
+            android:indeterminateTint="?android:attr/colorAccent"
             android:layout_gravity="center"
             android:indeterminate="true"
             android:paddingStart="15dp"

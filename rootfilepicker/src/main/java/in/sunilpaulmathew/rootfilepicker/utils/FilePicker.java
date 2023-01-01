@@ -190,6 +190,7 @@ public class FilePicker {
     @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
     public void launch() {
         saveString("path", mPath, mContext);
+        mSelectedFilePath = null;
         Intent intent = new Intent(mContext, FilePickerActivity.class);
         mResult.launch(intent);
     }

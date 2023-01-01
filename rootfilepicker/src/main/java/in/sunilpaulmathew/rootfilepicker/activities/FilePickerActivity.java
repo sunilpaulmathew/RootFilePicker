@@ -23,11 +23,4 @@ public class FilePickerActivity extends AppCompatActivity {
                 new FilePickerFragment()).commit();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        FilePicker.setSelectedFilePath(null);
-    }
-
 }
