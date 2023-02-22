@@ -11,12 +11,12 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.AppCompatImageButton;
-import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,8 +37,8 @@ import in.sunilpaulmathew.rootfilepicker.utils.FilePicker;
  */
 public class FilePickerFragment extends androidx.fragment.app.Fragment {
 
-    private LinearLayoutCompat mProgress;
     private MaterialTextView mTitle;
+    private ProgressBar mProgress;
     private RecyclerView mRecyclerView;
     private FilePickerAdapter mFilePickerAdapter;
 
@@ -51,7 +51,7 @@ public class FilePickerFragment extends androidx.fragment.app.Fragment {
         AppCompatImageButton mBack = mRootView.findViewById(R.id.back);
         mTitle = mRootView.findViewById(R.id.title);
         AppCompatImageButton mSortButton = mRootView.findViewById(R.id.sort);
-        mProgress = mRootView.findViewById(R.id.progress_layout);
+        mProgress = mRootView.findViewById(R.id.progress);
         mRecyclerView = mRootView.findViewById(R.id.recycler_view);
 
         if (FilePicker.getAccentColor(requireActivity()) != Integer.MIN_VALUE) {
